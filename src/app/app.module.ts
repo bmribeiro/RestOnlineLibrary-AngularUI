@@ -6,11 +6,13 @@ import { AppComponent } from './app.component';
 import { BooksComponent } from './pages/books/books.component';
 import { HttpClientModule } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { UsersComponent } from './pages/users/users.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    BooksComponent
+    BooksComponent,
+    UsersComponent
   ],
   imports: [
     HttpClientModule,

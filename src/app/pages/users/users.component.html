@@ -1,0 +1,19 @@
+<h1>Utilizadores</h1>
+
+<div *ngIf="isLoading; else userList">
+  <ng-template #loading>
+    <p>A carregar...</p>
+  </ng-template>
+</div>
+
+<ng-template #userList>
+  <div *ngIf="users.length > 0">
+    <ul>
+      <li *ngFor="let user of users">user</li>
+    </ul>
+  </div>
+
+  <div *ngIf="users.length === 0">
+    <p>Não há livros disponíveis.</p>
+  </div>
+</ng-template>
