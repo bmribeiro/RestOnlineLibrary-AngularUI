@@ -1,0 +1,12 @@
+<div *ngIf="books$ | async as books; else loading">
+    <h1>Books List</h1>
+    <ul>
+      <li *ngFor="let book of books">
+        {{ book }}
+      </li>
+    </ul>
+  </div>
+  
+  <ng-template #loading>
+    <p>Loading...</p>
+  </ng-template>
