@@ -9,6 +9,6 @@ export class BookService {
   constructor(private http: HttpClient) {}
 
   getBooks(): Observable<any> {
-    return this.http.get('http://localhost:8090/api/books');
+    return this.http.get('http://13.37.239.132:8090/api/books');
   }
 }
