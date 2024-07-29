@@ -9,6 +9,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { UsersComponent } from './pages/users/users.component';
 import { HomeComponent } from './pages/home/home.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
   imports: [
     HttpClientModule,
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatPaginatorModule,
+    MatTableModule
   ],
   providers: [
     provideAnimationsAsync()
