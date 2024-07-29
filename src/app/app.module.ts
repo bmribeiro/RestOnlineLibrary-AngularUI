@@ -11,6 +11,8 @@ import { HomeComponent } from './pages/home/home.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
+import { HeaderComponent } from './pages/common/header/header.component';
+import { FooterComponent } from './pages/common/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { MatTableModule } from '@angular/material/table';
     BooksComponent,
     UsersComponent,
     HomeComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     HttpClientModule,
