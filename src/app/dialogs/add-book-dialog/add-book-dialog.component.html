@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>New Book</h2>
+
+<mat-dialog-content>
+    <form [formGroup]="bookForm">
+
+        <!-- Title -->
+        <mat-form-field class="form-field-full-width">
+            <mat-label>Title</mat-label>
+            <input matInput formControlName="title" />
+
+            <!-- Title - Error Message -->
+            <mat-error *ngIf="bookForm.get('title')?.invalid">
+                Title is a required field.
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Category -->
+        <mat-form-field class="form-field-full-width">
+            <mat-label>Category</mat-label>
+            <input matInput formControlName="category">
+
+            <!-- Category - Error Message -->
+            <mat-error *ngIf="bookForm.get('category')?.invalid">
+                Category is a required field.
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Copies -->
+        <mat-form-field class="form-field-full-width">
+            <mat-label>Quantity</mat-label>
+            <input matInput formControlName="copies">
+
+            <!-- Copies - Error Message -->
+            <mat-error *ngIf="bookForm.get('copies')?.invalid">
+                Number of copies is a required field.
+            </mat-error>
+        </mat-form-field>
+
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button (click)="onSave()" [disabled]="!bookForm.valid">Add</button>
+</mat-dialog-actions>

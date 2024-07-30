@@ -13,6 +13,13 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { HeaderComponent } from './pages/common/header/header.component';
 import { FooterComponent } from './pages/common/footer/footer.component';
+import { AddBookDialogComponent } from './dialogs/add-book-dialog/add-book-dialog.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { AddUserDialogComponent } from './dialogs/add-user-dialog/add-user-dialog.component';
+import { MatDialogClose, MatDialogContent, MatDialogModule, MatDialogTitle } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { NotificationComponent } from './shared/notification/notification.component';
 
 @NgModule({
   declarations: [
@@ -22,14 +29,24 @@ import { FooterComponent } from './pages/common/footer/footer.component';
     HomeComponent,
     NotFoundComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    AddBookDialogComponent,
+    AddUserDialogComponent,
+    NotificationComponent
   ],
   imports: [
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
     MatPaginatorModule,
-    MatTableModule
+    MatTableModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDialogModule,
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogClose
   ],
   providers: [
     provideAnimationsAsync()

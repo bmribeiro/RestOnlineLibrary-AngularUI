@@ -3,6 +3,9 @@ import { BookService } from '../../services/book.service';
 import { Book } from '../../models/book';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
+import { AddBookDialogComponent } from '../../dialogs/add-book-dialog/add-book-dialog.component';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-books',
@@ -10,6 +13,7 @@ import { MatPaginator } from '@angular/material/paginator';
   styleUrl: './books.component.css',
 })
 export class BooksComponent implements OnInit, AfterViewInit {
+
   // List of Books
   books: Book[] = [];
 
@@ -17,9 +21,14 @@ export class BooksComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['title', 'category', 'copies', 'available'];
   dataSource!: MatTableDataSource<Book, MatPaginator>;
 
+  // Reference to the MatPaginator for pagination control
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private bookService: BookService) {}
+  constructor(
+    private bookService: BookService,
+    private notificationService : NotificationService,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     console.log('> OnInit');
@@ -48,5 +57,26 @@ export class BooksComponent implements OnInit, AfterViewInit {
     if (this.dataSource && this.paginator) {
       this.dataSource.paginator = this.paginator;
     }
+  }
+
+  addBook() : void {
+    const dialogRef = this.dialog.open(AddBookDialogComponent, {
+      data : {} as Book
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      if (result && result.el) {
+        this.bookService.saveBook(result.el).subscribe(
+
+          res => {
+            this.notificationService.sendMessage("Book " + res.title + " for category " + res.category + " has been added successfully.");
+          },
+          error => {
+            console.log('Error' + error);
+          }
+        )
+      }
+    });
   }
 }
