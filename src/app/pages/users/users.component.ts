@@ -1,11 +1,12 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { UsersService } from '../../services/users.service';
+import { UserService } from '../../services/user.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { User } from '../../models/user';
 import { MatPaginator } from '@angular/material/paginator';
 import { AddUserDialogComponent } from '../../dialogs/add-user-dialog/add-user-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { NotificationService } from '../../services/notification.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-users',
@@ -18,21 +19,22 @@ export class UsersComponent implements OnInit, AfterViewInit {
   users: User[] = [];
 
   // Table Configuration
-  displayedColumns: string[] = ['user', 'email', 'role', 'created', 'active'];
+  displayedColumns: string[] = ['user', 'email', 'role', 'created', 'active', 'delete_action'];
   dataSource!: MatTableDataSource<User, MatPaginator>;
 
   // Reference to the MatPaginator for pagination control
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
-    private usersService: UsersService,
+    private userService: UserService,
     private notificationService : NotificationService,
+    private router: Router,
     public dialog: MatDialog) {}
 
   ngOnInit(): void {
     console.log('> OnInit');
 
-    this.usersService.getUsers().subscribe(
+    this.userService.getUsers().subscribe(
       (data) => {
         this.users = data;
 
@@ -68,7 +70,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
 
       if (result && result.el) {
 
-        this.usersService.saveUser(result.el).subscribe(
+        this.userService.saveUser(result.el).subscribe(
 
           res => {
             this.notificationService.sendMessage("Utilizador " + res.username + " foi adicionado com sucesso.");
@@ -79,5 +81,30 @@ export class UsersComponent implements OnInit, AfterViewInit {
         )
       }
     });
+  }
+
+  deleteUser(user: User): void {
+    
+    // Service Call
+    this.userService.deleteUser(user.id!).subscribe({
+
+      // HTTP call is successful
+      next: (response) => {
+
+        // Deletion was successful
+        if (response.status === 204) {
+          this.notificationService.sendMessage("Successfully Deleted User")
+        }
+      },
+
+      // Error during HTTP call
+      error: (error) => {
+        this.notificationService.sendMessage(error.message)
+      }
+    });
+  }
+
+  viewDetails(user: User): void {
+    this.router.navigate(['/detail', 'user', user.id]);
   }
 }

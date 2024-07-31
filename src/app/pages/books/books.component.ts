@@ -6,6 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { AddBookDialogComponent } from '../../dialogs/add-book-dialog/add-book-dialog.component';
 import { NotificationService } from '../../services/notification.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-books',
@@ -18,7 +19,7 @@ export class BooksComponent implements OnInit, AfterViewInit {
   books: Book[] = [];
 
   // Table Configuration
-  displayedColumns: string[] = ['title', 'category', 'copies', 'available'];
+  displayedColumns: string[] = ['title', 'category', 'copies', 'available', 'delete_action'];
   dataSource!: MatTableDataSource<Book, MatPaginator>;
 
   // Reference to the MatPaginator for pagination control
@@ -27,6 +28,7 @@ export class BooksComponent implements OnInit, AfterViewInit {
   constructor(
     private bookService: BookService,
     private notificationService : NotificationService,
+    private router: Router,
     public dialog: MatDialog
   ) {}
 
@@ -78,5 +80,30 @@ export class BooksComponent implements OnInit, AfterViewInit {
         )
       }
     });
+  }
+
+  deleteBook(book: Book): void {
+    
+    // Service Call
+    this.bookService.deleteBook(book.id!).subscribe({
+
+      // HTTP call is successful
+      next: (response) => {
+
+        // Deletion was successful
+        if (response.status === 204) {
+          this.notificationService.sendMessage("Successfully Deleted Book")
+        }
+      },
+
+      // Error during HTTP call
+      error: (error) => {
+        this.notificationService.sendMessage(error.message)
+      }
+    });
+  }
+
+  viewDetails(book: Book): void {
+    this.router.navigate(['/detail', 'book', book.id]);
   }
 }

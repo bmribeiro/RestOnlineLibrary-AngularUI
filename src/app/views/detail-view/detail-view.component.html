@@ -1,0 +1,26 @@
+<div *ngIf="type === 'user' && data">
+
+    <h2>User Details</h2>
+
+    <div>
+        <p>Title: {{data.username }} </p>
+        <p>Category: {{data.email }} </p>
+        <p>Copies: {{data.profile }} </p>
+        <p>Available: {{data.created }} </p>
+        <p>Available: {{data.boolean }} </p>
+    </div>
+
+</div>
+
+<div *ngIf="type === 'book' && data">
+
+    <h2>Book Details</h2>
+
+    <div>
+        <p>Title: {{data.title }} </p>
+        <p>Category: {{data.category }} </p>
+        <p>Copies: {{data.copies }} </p>
+        <p>Available: {{data.available }} </p>
+    </div>
+
+</div>

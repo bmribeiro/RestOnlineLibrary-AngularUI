@@ -1,0 +1,15 @@
+{
+  "BOOKS": {
+    "TITLE": "Title",
+    "CATEGORY": "Category",
+    "COPIES": "Copies",
+    "AVAILABILITY": "AVAILABILITY"
+  },
+  "USERS": {
+    "USER": "User",
+    "EMAIL": "Email",
+    "ROLE": "Role",
+    "CREATED": "Creation Date",
+    "ACTIVE": "State"
+  }
+}

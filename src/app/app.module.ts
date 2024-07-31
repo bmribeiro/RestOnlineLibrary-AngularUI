@@ -20,6 +20,9 @@ import { MatDialogClose, MatDialogContent, MatDialogModule, MatDialogTitle } fro
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NotificationComponent } from './shared/notification/notification.component';
+import { MatIconModule } from '@angular/material/icon';
+import { DetailComponent } from './pages/detail/detail.component';
+import { DetailViewComponent } from './views/detail-view/detail-view.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +35,9 @@ import { NotificationComponent } from './shared/notification/notification.compon
     FooterComponent,
     AddBookDialogComponent,
     AddUserDialogComponent,
-    NotificationComponent
+    NotificationComponent,
+    DetailComponent,
+    DetailViewComponent
   ],
   imports: [
     HttpClientModule,
@@ -47,7 +52,8 @@ import { NotificationComponent } from './shared/notification/notification.compon
     MatDialogModule,
     MatDialogTitle,
     MatDialogContent,
-    MatDialogClose
+    MatDialogClose,
+    MatIconModule
   ],
   providers: [
     provideAnimationsAsync()
