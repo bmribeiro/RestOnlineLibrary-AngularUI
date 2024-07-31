@@ -3,6 +3,9 @@ import { UsersService } from '../../services/users.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { User } from '../../models/user';
 import { MatPaginator } from '@angular/material/paginator';
+import { AddUserDialogComponent } from '../../dialogs/add-user-dialog/add-user-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-users',
@@ -21,7 +24,10 @@ export class UsersComponent implements OnInit, AfterViewInit {
   // Reference to the MatPaginator for pagination control
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private usersService: UsersService) {}
+  constructor(
+    private usersService: UsersService,
+    private notificationService : NotificationService,
+    public dialog: MatDialog) {}
 
   ngOnInit(): void {
     console.log('> OnInit');
@@ -51,5 +57,27 @@ export class UsersComponent implements OnInit, AfterViewInit {
     if (this.dataSource && this.paginator) {
       this.dataSource.paginator = this.paginator;
     }
+  }
+
+  addUser() : void {
+    const dialogRef = this.dialog.open(AddUserDialogComponent, {
+      data : {} as User
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      if (result && result.el) {
+
+        this.usersService.saveUser(result.el).subscribe(
+
+          res => {
+            this.notificationService.sendMessage("Utilizador " + res.username + " foi adicionado com sucesso.");
+          },
+          error => {
+            console.log('Error' + error);
+          }
+        )
+      }
+    });
   }
 }

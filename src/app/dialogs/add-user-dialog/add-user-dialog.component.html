@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>New Book</h2>
+
+<mat-dialog-content>
+    <form [formGroup]="userForm">
+
+        <!-- Username -->
+        <mat-form-field class="form-field-full-width">
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="username" />
+
+            <!-- Username - Error Message -->
+            <mat-error *ngIf="userForm.get('username')?.invalid">
+              Username is a required field.
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Email -->
+        <mat-form-field class="form-field-full-width">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email">
+
+            <!-- Email - Error Message -->
+            <mat-error *ngIf="userForm.get('email')?.invalid">
+              Email is a required field.
+            </mat-error>
+        </mat-form-field>
+
+        <!-- Profile -->
+        <mat-form-field class="form-field-full-width">
+            <mat-label>Profile</mat-label>
+            <input matInput formControlName="profile">
+
+            <!-- Profile - Error Message -->
+            <mat-error *ngIf="userForm.get('profile')?.invalid">
+              Profile is a required field.
+            </mat-error>
+        </mat-form-field>
+    </form>
+    
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button (click)="onSave()" [disabled]="!userForm.valid">Add</button>
+</mat-dialog-actions>

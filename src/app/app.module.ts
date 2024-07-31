@@ -14,7 +14,7 @@ import { MatTableModule } from '@angular/material/table';
 import { HeaderComponent } from './pages/common/header/header.component';
 import { FooterComponent } from './pages/common/footer/footer.component';
 import { AddBookDialogComponent } from './dialogs/add-book-dialog/add-book-dialog.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddUserDialogComponent } from './dialogs/add-user-dialog/add-user-dialog.component';
 import { MatDialogClose, MatDialogContent, MatDialogModule, MatDialogTitle } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -40,6 +40,7 @@ import { NotificationComponent } from './shared/notification/notification.compon
     AppRoutingModule,
     MatPaginatorModule,
     MatTableModule,
+    FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
