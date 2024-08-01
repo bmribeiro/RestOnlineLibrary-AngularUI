@@ -23,6 +23,9 @@ import { NotificationComponent } from './shared/notification/notification.compon
 import { MatIconModule } from '@angular/material/icon';
 import { DetailComponent } from './pages/detail/detail.component';
 import { DetailViewComponent } from './views/detail-view/detail-view.component';
+import { MatButtonModule } from '@angular/material/button';
+import { FormComponent } from './pages/authentication/form/form.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -37,7 +40,8 @@ import { DetailViewComponent } from './views/detail-view/detail-view.component';
     AddUserDialogComponent,
     NotificationComponent,
     DetailComponent,
-    DetailViewComponent
+    DetailViewComponent,
+    FormComponent
   ],
   imports: [
     HttpClientModule,
@@ -53,7 +57,9 @@ import { DetailViewComponent } from './views/detail-view/detail-view.component';
     MatDialogTitle,
     MatDialogContent,
     MatDialogClose,
-    MatIconModule
+    MatIconModule,
+    MatButtonModule,
+    MatTabsModule
   ],
   providers: [
     provideAnimationsAsync()

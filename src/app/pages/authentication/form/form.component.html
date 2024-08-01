@@ -1,0 +1,92 @@
+<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center" dynamicHeight (selectedTabChange)="onTabChange($event)">
+    <mat-tab label="Login">
+
+        <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+
+            <!-- Email -->
+            <mat-form-field class="form-field-full-width">
+                <mat-label>Enter your email</mat-label>
+                <input matInput formControlName="loginEmail" />
+                <!-- Email - Error Message -->
+                <mat-error *ngIf="loginForm.get('loginEmail')?.invalid">
+                    Invalid Email
+                </mat-error>
+            </mat-form-field>
+
+            <!-- Password -->
+            <mat-form-field class="form-field-full-width">
+                <mat-label>Enter your password</mat-label>
+                <input matInput [type]="hide() ? 'password' : 'text'" formControlName="loginPassword" />
+                <button mat-icon-button matSuffix (click)="clickEvent($event)" [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hide()">
+                    <mat-icon>{{ hide() ? "visibility_off" : "visibility" }}</mat-icon>
+                </button>
+                <!-- Password - Error Message -->
+                <mat-error *ngIf="loginForm.get('loginEmail')?.invalid">
+                    Required Field
+                </mat-error>
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">
+                Login
+            </button>
+        </form>
+    </mat-tab>
+
+    <mat-tab label="Register">
+        <form [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()">
+
+            <!-- First Name -->
+            <mat-form-field>
+                <mat-label>Your First</mat-label>
+                <input matInput formControlName="registerFirstName" />
+
+                <!-- First Name - Error Message -->
+                <mat-error *ngIf="registerForm.get('registerFirstName')?.invalid">
+                    Required field
+                </mat-error>
+            </mat-form-field>
+
+            <!-- Last Name -->
+            <mat-form-field>
+                <mat-label>Your First</mat-label>
+                <input matInput formControlName="registerLastName" />
+
+                <!-- Last Name - Error Message -->
+                <mat-error *ngIf="registerForm.get('registerLastName')?.invalid">
+                    Required field
+                </mat-error>
+            </mat-form-field>
+
+            <!-- Email -->
+            <mat-form-field>
+                <mat-label>Enter your email</mat-label>
+                <input matInput formControlName="registerEmail" />
+
+                <!-- Email - Error Message -->
+                <mat-error *ngIf="registerForm.get('registerEmail')?.invalid">
+                    Required field
+                </mat-error>
+            </mat-form-field>
+
+            <!-- Password -->
+            <mat-form-field>
+                <mat-label>Enter your password</mat-label>
+                <input formControlName="registerPassword" matInput [type]="hide() ? 'password' : 'text'" />
+                <button mat-icon-button matSuffix (click)="clickEvent($event)" [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hide()">
+                    <mat-icon>{{ hide() ? "visibility_off" : "visibility" }}</mat-icon>
+                </button>
+
+                <!-- Password - Error Message -->
+                <mat-error *ngIf="loginForm.get('loginEmail')?.invalid">
+                    Required Field
+                </mat-error>
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" type="submit">
+                Register
+            </button>
+        </form>
+    </mat-tab>
+</mat-tab-group>

@@ -17,10 +17,20 @@
                     <a class="nav-link" routerLink="/users" routerLinkActive="active" aria-current="page">Users</a>
                 </li>
             </ul>
+
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+
+                    <button *ngIf="!(isAuthenticated$ | async)" class="btn btn-primary" routerLink="/authentication">Login</button>
+                    <button *ngIf="isAuthenticated$ | async" class="btn btn-secondary" (click)="onLogout()">Logout</button>
+
+                </li>
+            </ul>
+
         </div>
     </div>
 </nav>
 
-
+<hr>
 
 <router-outlet></router-outlet>

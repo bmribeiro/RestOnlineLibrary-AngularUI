@@ -1,8 +1,9 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { User } from '../models/user';
+import { AxiosService } from './axios.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,10 +12,17 @@ export class UserService {
 
   private apiUrl = environment.apiUrl;
   
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private axiosService: AxiosService) {}
 
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.apiUrl}/api/users`);
+
+    let headers = new HttpHeaders();
+
+    if (this.axiosService.getAuthToken() !== null) {
+      headers = headers.set('Authorization', `Bearer ${this.axiosService.getAuthToken()}`);
+    }
+
+    return this.http.get<User[]>(`${this.apiUrl}/api/users`, { headers });
   }
 
   getUserById(id : number) : Observable<HttpResponse<User>>{
