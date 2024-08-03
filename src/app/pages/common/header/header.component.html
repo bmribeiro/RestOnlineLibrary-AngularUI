@@ -5,6 +5,8 @@
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+
+        <!-- Menu -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
@@ -17,15 +19,33 @@
                     <a class="nav-link" routerLink="/users" routerLinkActive="active" aria-current="page">Users</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" routerLink="/authusers" routerLinkActive="active" aria-current="page">Auth Users</a>
+                    <a class="nav-link" routerLink="/authusers" routerLinkActive="active" aria-current="page">Auth
+                        Users</a>
                 </li>
             </ul>
 
+            <!-- Login / Logout -->
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item">
 
-                    <button *ngIf="!(isAuthenticated$ | async)" class="btn btn-primary" routerLink="/authentication">Login</button>
-                    <button *ngIf="isAuthenticated$ | async" class="btn btn-secondary" (click)="onLogout()">Logout</button>
+                    <!-- Login -->
+                    <button *ngIf="!(isAuthenticated$ | async)" class="btn btn-outline-success btn-sm"
+                        routerLink="/authentication">Login</button>
+
+
+                    <!-- Authenticated -->
+                    <ng-container *ngIf="isAuthenticated$ | async">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" routerLink="/settings" routerLinkActive="active"
+                                    aria-current="page">Settings</a>
+                            </li>
+                            <li class="nav-item">
+                                <button *ngIf="isAuthenticated$ | async" class="btn btn-outline-secondary btn-sm"
+                                    (click)="onLogout()">Logout</button>
+                            </li>
+                        </ul>
+                    </ng-container>
 
                 </li>
             </ul>

@@ -29,7 +29,7 @@
   <!-- Available -->
   <ng-container matColumnDef="available">
     <th mat-header-cell *matHeaderCellDef>Available</th>
-    <td mat-cell *matCellDef="let element">{{ element.available }}</td>
+    <td mat-cell *matCellDef="let element">{{ element.available ? 'Yes' : 'No' }}</td>
   </ng-container>
 
   <!-- Delete Book -->
@@ -44,21 +44,31 @@
 
   <!-- Rent Book -->
   <ng-container matColumnDef="request_action">
-    <th mat-header-cell *matHeaderCellDef> Requisitar </th>
+    <th mat-header-cell *matHeaderCellDef> Rent </th>
     <td mat-cell *matCellDef="let element" class="col-rent_action">
-        <button *ngIf="element.available && !isBookRentedByUser(element.reservations)" mat-icon-button (click)="actionOverBook('reserve', element)">
-            <mat-icon>redo</mat-icon>
+
+      <ng-container *ngIf="element.available">
+
+        <!-- User can rent book -->
+        <button *ngIf="!isBookRentedByUser(element.reservations)" mat-icon-button
+          (click)="actionOverBook('reserve', element)">
+          <mat-icon>redo</mat-icon>
         </button>
+
+        <!-- User has rented the book -->
+        <span *ngIf="isBookRentedByUser(element.reservations)" class="rented-label">Rented</span>
+      </ng-container>
+
     </td>
   </ng-container>
 
   <!-- Receive Book -->
   <ng-container matColumnDef="return_action">
-    <th mat-header-cell *matHeaderCellDef> Devolver </th>
+    <th mat-header-cell *matHeaderCellDef> Return </th>
     <td mat-cell *matCellDef="let element" class="col-receive_action">
-        <button mat-icon-button (click)="actionOverBook('return', element)">
-            <mat-icon>undo</mat-icon>
-        </button>
+      <button mat-icon-button *ngIf="isBookRentedByUser(element.reservations)" (click)="actionOverBook('return', element)">
+        <mat-icon>undo</mat-icon>
+      </button>
     </td>
   </ng-container>
 

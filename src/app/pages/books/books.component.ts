@@ -119,6 +119,7 @@ export class BooksComponent implements OnInit, AfterViewInit {
     });
   }
 
+  // Actions on the book: Rent and Return
   actionOverBook(action : String, book: Book): void {
 
     console.log('> Action Over a Book');
@@ -132,8 +133,10 @@ export class BooksComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {
 
-      console.log('Result' + result);
-      console.log('User' + this.user);
+      console.log("After Close Dialog");
+
+      console.log(result);
+      console.log(this.user);
 
       if(result && this.user != null){
 
@@ -167,15 +170,12 @@ export class BooksComponent implements OnInit, AfterViewInit {
       }
       
     });
-
   }
 
+  // If the user has the book rented, it hides the rent button and provides a return button
   isBookRentedByUser(reservations: any[]): boolean {
-
-    reservations.forEach(a => a.userId === this.user);
-    return reservations.some(reservation => reservation.userId === this.user);
+    return reservations.some(reservation => reservation.userId === this.user?.id);
   }
-
 
   viewDetails(book: Book): void {
     this.router.navigate(['/detail', 'book', book.id]);

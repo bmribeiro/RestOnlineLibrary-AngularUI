@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BooksComponent } from './pages/books/books.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { UsersComponent } from './pages/users/users.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -28,6 +27,7 @@ import { FormComponent } from './pages/authentication/form/form.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { BookDialogComponent } from './dialogs/book-dialog/book-dialog.component';
 import { AuthUsersComponent } from './pages/auth-users/auth-users.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -66,6 +66,7 @@ import { AuthUsersComponent } from './pages/auth-users/auth-users.component';
     MatTabsModule
   ],
   providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     provideAnimationsAsync()
   ],
   bootstrap: [AppComponent]
