@@ -54,7 +54,7 @@ export class FormComponent {
 
       this.axiosService
         .request('POST', '/login', {
-          login: email,
+          email: email,
           password: password,
         })
         .then((response) => {
@@ -82,7 +82,7 @@ export class FormComponent {
 		    {
 		        firstName: registerFirstName,
 		        lastName: registerLastName,
-		        login: registerEmail,
+		        email: registerEmail,
 		        password: registerPassword
 		    }).then(
 		    response => {

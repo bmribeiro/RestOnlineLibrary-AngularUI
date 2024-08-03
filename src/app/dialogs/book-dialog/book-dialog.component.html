@@ -1,0 +1,17 @@
+<h2 mat-dialog-title *ngIf="action === 'reserve'">Do you want to request the book?</h2>
+<h2 mat-dialog-title *ngIf="action === 'return'">Do you want to return the book?</h2>
+
+<mat-dialog-content>
+
+    <div *ngIf="book" class="form-field-full-width">
+        <p><strong>Títle:</strong> {{ book.title }}</p>
+        <p><strong>Category:</strong> {{ book.category }}</p>
+        <p><strong>Copies:</strong> {{ book.copies }}</p>
+    </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">Cancelar</button>
+    <button mat-button (click)="onConfirm()">Ok</button>
+</mat-dialog-actions>

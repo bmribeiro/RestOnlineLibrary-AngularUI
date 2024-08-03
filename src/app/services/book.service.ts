@@ -30,7 +30,14 @@ export class BookService {
   }
 
   saveBook(book: Book): Observable<Book>{
-    return this.http.post<Book>(`${this.apiUrl}/api/books`,book);
+
+    let headers = new HttpHeaders();
+
+    if (this.axiosService.getAuthToken() !== null) {
+      headers = headers.set('Authorization', `Bearer ${this.axiosService.getAuthToken()}`);
+    }
+
+    return this.http.post<Book>(`${this.apiUrl}/api/books`,book, { headers });
   }
 
   deleteBook(id: number): Observable<HttpResponse<void>> {

@@ -36,6 +36,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
 
     this.userService.getUsers().subscribe(
       (data) => {
+
         this.users = data;
 
         this.dataSource = new MatTableDataSource<User>(this.users);
@@ -73,7 +74,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
         this.userService.saveUser(result.el).subscribe(
 
           res => {
-            this.notificationService.sendMessage("Utilizador " + res.username + " foi adicionado com sucesso.");
+            this.notificationService.sendMessage("User " + res.username + " added successfully.");
           },
           error => {
             console.log('Error' + error);

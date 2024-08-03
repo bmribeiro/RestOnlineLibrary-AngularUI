@@ -7,6 +7,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddBookDialogComponent } from '../../dialogs/add-book-dialog/add-book-dialog.component';
 import { NotificationService } from '../../services/notification.service';
 import { Router } from '@angular/router';
+import { BookDialogComponent } from '../../dialogs/book-dialog/book-dialog.component';
+import { UserActiveService } from '../../services/user-active.service';
+import { AuthUser } from '../../models/auth_user';
+import { Reservation } from '../../models/reservation';
+import { ReservationService } from '../../services/reservation.service';
 
 @Component({
   selector: 'app-books',
@@ -15,11 +20,14 @@ import { Router } from '@angular/router';
 })
 export class BooksComponent implements OnInit, AfterViewInit {
 
+  // Selected User
+  user: AuthUser | null = null;
+
   // List of Books
   books: Book[] = [];
 
   // Table Configuration
-  displayedColumns: string[] = ['title', 'category', 'copies', 'available', 'delete_action'];
+  displayedColumns: string[] = ['title', 'category', 'copies', 'available', 'delete_action', 'request_action', 'return_action'];
   dataSource!: MatTableDataSource<Book, MatPaginator>;
 
   // Reference to the MatPaginator for pagination control
@@ -27,10 +35,17 @@ export class BooksComponent implements OnInit, AfterViewInit {
 
   constructor(
     private bookService: BookService,
+    private reservationService: ReservationService,
     private notificationService : NotificationService,
     private router: Router,
+    private userActiveService: UserActiveService,
     public dialog: MatDialog
-  ) {}
+  ) {
+
+    this.userActiveService.getSelectedUser().subscribe(selectedUser => {
+      this.user = selectedUser;
+    });
+  }
 
   ngOnInit(): void {
     console.log('> OnInit');
@@ -40,6 +55,7 @@ export class BooksComponent implements OnInit, AfterViewInit {
         this.books = data;
 
         this.dataSource = new MatTableDataSource<Book>(this.books);
+        console.log(this.books);
 
         if (this.paginator) {
           // Connect MatPaginator to MatTableDataSource
@@ -102,6 +118,64 @@ export class BooksComponent implements OnInit, AfterViewInit {
       }
     });
   }
+
+  actionOverBook(action : String, book: Book): void {
+
+    console.log('> Action Over a Book');
+
+    const dialogRef = this.dialog.open(BookDialogComponent, {
+      data: { 
+        obj: book, 
+        action: action
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      console.log('Result' + result);
+      console.log('User' + this.user);
+
+      if(result && this.user != null){
+
+        const reservation: Reservation = {
+          id: null,
+          user: this.user,
+          book: result.obj,
+          active: true
+        };
+
+        // Request Action
+        if(result.action === 'reserve') {
+
+          // Reservation
+          console.log('> Reservation');
+
+          this.reservationService.reserveBook(reservation).subscribe({
+
+            // HTTP call is successful
+            next: (response) => {
+              console.log(response);
+            }
+          });
+
+          // Return Action
+        } else if (result.return === 'return') {
+
+          // TODO
+        }
+
+      }
+      
+    });
+
+  }
+
+  isBookRentedByUser(reservations: any[]): boolean {
+
+    reservations.forEach(a => a.userId === this.user);
+    return reservations.some(reservation => reservation.userId === this.user);
+  }
+
 
   viewDetails(book: Book): void {
     this.router.navigate(['/detail', 'book', book.id]);

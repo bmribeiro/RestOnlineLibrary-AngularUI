@@ -1,1 +1,13 @@
-<p>home works!</p>
+<div *ngIf="books.length > 0; else noBooks">
+    <ul>
+      <li *ngFor="let book of books">
+        <h3>{{ book.title }}</h3>
+        <p>Category: {{ book.category }}</p>
+      </li>
+    </ul>
+  </div>
+  
+  <ng-template #noBooks>
+    <p>No books available.</p>
+  </ng-template>
+  

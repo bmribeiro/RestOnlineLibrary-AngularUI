@@ -26,6 +26,8 @@ import { DetailViewComponent } from './views/detail-view/detail-view.component';
 import { MatButtonModule } from '@angular/material/button';
 import { FormComponent } from './pages/authentication/form/form.component';
 import { MatTabsModule } from '@angular/material/tabs';
+import { BookDialogComponent } from './dialogs/book-dialog/book-dialog.component';
+import { AuthUsersComponent } from './pages/auth-users/auth-users.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,9 @@ import { MatTabsModule } from '@angular/material/tabs';
     NotificationComponent,
     DetailComponent,
     DetailViewComponent,
-    FormComponent
+    FormComponent,
+    BookDialogComponent,
+    AuthUsersComponent
   ],
   imports: [
     HttpClientModule,

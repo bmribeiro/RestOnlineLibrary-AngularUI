@@ -4,6 +4,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { User } from '../models/user';
 import { AxiosService } from './axios.service';
+import { Book } from '../models/book';
 
 @Injectable({
   providedIn: 'root',
@@ -16,17 +17,12 @@ export class UserService {
 
   getUsers(): Observable<User[]> {
 
-    let headers = new HttpHeaders();
-
-    if (this.axiosService.getAuthToken() !== null) {
-      headers = headers.set('Authorization', `Bearer ${this.axiosService.getAuthToken()}`);
-    }
-
-    return this.http.get<User[]>(`${this.apiUrl}/api/users`, { headers });
+    return this.http.get<User[]>(`${this.apiUrl}/api/users`, { headers: this.getHeaders() });
   }
 
   getUserById(id : number) : Observable<HttpResponse<User>>{
-    return this.http.get<User>(`${this.apiUrl}/api/users/${id}`, { observe: 'response'});
+    
+    return this.http.get<User>(`${this.apiUrl}/api/users/${id}`, { headers: this.getHeaders(), observe: 'response'});
   }
 
   saveUser(user: User): Observable<User>{
@@ -54,4 +50,22 @@ export class UserService {
       })
     );
   }
+
+  getBooksReservedByUser(userId: number): Observable<Book[]> {
+
+    console.log("Serviço");
+    return this.http.get<Book[]>(`${this.apiUrl}/api/authUsers/${userId}/books`, { headers: this.getHeaders()});
+  }
+
+  private getHeaders(): HttpHeaders {
+    let headers = new HttpHeaders();
+
+    const authToken = this.axiosService.getAuthToken();
+    if (authToken !== null) {
+      headers = headers.set('Authorization', `Bearer ${authToken}`);
+    }
+
+    return headers;
+  }
+  
 }
