@@ -133,18 +133,15 @@ export class BooksComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {
 
-      console.log("After Close Dialog");
-
-      console.log(result);
-      console.log(this.user);
-
       if(result && this.user != null){
 
         const reservation: Reservation = {
           id: null,
           user: this.user,
           book: result.obj,
-          active: true
+          reservedAt: null,
+          status: null,
+          statusChangedAt: null
         };
 
         // Request Action
@@ -181,3 +178,4 @@ export class BooksComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/detail', 'book', book.id]);
   }
 }
+

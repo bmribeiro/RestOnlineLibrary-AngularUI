@@ -5,5 +5,7 @@ export interface Reservation {
     id: number | null;
     user: AuthUser | number;
     book: Book | number;
-    active: boolean;
+    reservedAt: string | null,
+    status: string | null,
+    statusChangedAt: string | null
 }

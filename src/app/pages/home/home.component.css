@@ -1,0 +1,23 @@
+.customStyle {
+    box-shadow: none !important;
+}
+
+.green {
+    color: green;
+}
+
+.yellow {
+    color: yellow;
+}
+
+.orange {
+    color: orange;
+}
+
+.red {
+    color: red;
+}
+
+.small-icon {
+    font-size: 16px;
+}

@@ -1,12 +1,4 @@
 .bg-body-tertiary {
     background-color: white !important;
-    margin-bottom: 25px;
 }
 
-.icon-button {
-    display: flex;
-  }
-  
-  .icon-size {
-    font-size: 10px;
-  }
