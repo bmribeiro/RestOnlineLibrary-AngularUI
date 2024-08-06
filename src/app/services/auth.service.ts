@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, of, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -39,6 +39,25 @@ export class AuthService {
     }
   }
 
+  validateToken(): Observable<any> {
+
+    const token = this.getAuthToken();
+    return this.http.post(`${this.apiUrl}/validate`, {}, { headers: { Authorization: `Bearer ${token}` }
+    })
+    
+    .pipe(
+
+      tap((response: any) => {
+        console.log('Response from validateToken service:', response);
+      }),
+      
+      catchError(error => {
+        console.error('Error in validateToken service:', error);
+        return of(false);
+      })
+    );
+  }
+
   // Faz uma requisição HTTP usando HttpClient
   request(method: string, url: string, data: any): Observable<any> {
 
@@ -58,4 +77,5 @@ export class AuthService {
         throw new Error(`Unsupported method: ${method}`);
     }
   }
+  
 }

@@ -65,8 +65,6 @@ export class FormComponent {
       .subscribe(
         (response) => {
 
-          console.log("Login com Sucesso " + JSON.stringify(response));
-
           this.authService.setAuthToken(response.token);
           this.userActiveService.setSelectedUser(response);
 
