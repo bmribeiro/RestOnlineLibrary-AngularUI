@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Book } from '../models/book';
+import { AvailableBook } from '../models/available-book';
 
 @Injectable({
   providedIn: 'root',
@@ -14,9 +15,9 @@ export class BookService {
   constructor(private http: HttpClient) {
   }
 
-  getBooks(): Observable<Book[]> {
+  getBooks(): Observable<AvailableBook[]> {
 
-    return this.http.get<Book[]>(`${this.apiUrl}/api/books`);
+    return this.http.get<AvailableBook[]>(`${this.apiUrl}/api/books`);
   }
 
   getBookById(id: number): Observable<HttpResponse<Book>> {
@@ -50,4 +51,9 @@ export class BookService {
         })
       );
   }
+
+  getAllBooksWithUserRentalStatus(userId: number): Observable<AvailableBook[]> {
+    return this.http.get<AvailableBook[]>(`${this.apiUrl}/api/books/user-status/${userId}`);
+  }
+
 }

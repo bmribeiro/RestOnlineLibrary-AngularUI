@@ -12,6 +12,7 @@ import { UserActiveService } from '../../services/user-active.service';
 import { AuthUser } from '../../models/auth_user';
 import { Reservation } from '../../models/reservation';
 import { ReservationService } from '../../services/reservation.service';
+import { AvailableBook } from '../../models/available-book';
 
 @Component({
   selector: 'app-books',
@@ -24,11 +25,11 @@ export class BooksComponent implements OnInit, AfterViewInit {
   user: AuthUser | null = null;
 
   // List of Books
-  books: Book[] = [];
+  availableBooks: AvailableBook[] = [];
 
   // Table Configuration
   displayedColumns: string[] = ['title', 'category', 'copies', 'available', 'delete_action', 'request_action', 'return_action'];
-  dataSource!: MatTableDataSource<Book, MatPaginator>;
+  dataSource!: MatTableDataSource<AvailableBook, MatPaginator>;
 
   // Reference to the MatPaginator for pagination control
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -36,7 +37,7 @@ export class BooksComponent implements OnInit, AfterViewInit {
   constructor(
     private bookService: BookService,
     private reservationService: ReservationService,
-    private notificationService : NotificationService,
+    private notificationService: NotificationService,
     private router: Router,
     private userActiveService: UserActiveService,
     public dialog: MatDialog
@@ -50,12 +51,14 @@ export class BooksComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     console.log('> OnInit');
 
-    this.bookService.getBooks().subscribe(
+    this.bookService.getAllBooksWithUserRentalStatus(this.user!.id!).subscribe(
       (data) => {
-        this.books = data;
+        this.availableBooks = data;
 
-        this.dataSource = new MatTableDataSource<Book>(this.books);
-        console.log(this.books);
+        console.log(this.availableBooks);
+
+        this.dataSource = new MatTableDataSource<AvailableBook>(this.availableBooks);
+        console.log(this.availableBooks);
 
         if (this.paginator) {
           // Connect MatPaginator to MatTableDataSource
@@ -77,9 +80,9 @@ export class BooksComponent implements OnInit, AfterViewInit {
     }
   }
 
-  addBook() : void {
+  addBook(): void {
     const dialogRef = this.dialog.open(AddBookDialogComponent, {
-      data : {} as Book
+      data: {} as Book
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -98,10 +101,10 @@ export class BooksComponent implements OnInit, AfterViewInit {
     });
   }
 
-  deleteBook(book: Book): void {
-    
+  deleteBook(availableBook: number): void {
+
     // Service Call
-    this.bookService.deleteBook(book.id!).subscribe({
+    this.bookService.deleteBook(availableBook).subscribe({
 
       // HTTP call is successful
       next: (response) => {
@@ -120,20 +123,20 @@ export class BooksComponent implements OnInit, AfterViewInit {
   }
 
   // Actions on the book: Rent and Return
-  actionOverBook(action : String, book: Book): void {
+  actionOverBook(action: String, book: AvailableBook): void {
 
     console.log('> Action Over a Book');
 
     const dialogRef = this.dialog.open(BookDialogComponent, {
-      data: { 
-        obj: book, 
+      data: {
+        obj: book,
         action: action
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
 
-      if(result && this.user != null){
+      if (result && this.user != null) {
 
         const reservation: Reservation = {
           id: null,
@@ -145,7 +148,7 @@ export class BooksComponent implements OnInit, AfterViewInit {
         };
 
         // Request Action
-        if(result.action === 'reserve') {
+        if (result.action === 'reserve') {
 
           // Reservation
           console.log('> Reservation');
@@ -159,19 +162,22 @@ export class BooksComponent implements OnInit, AfterViewInit {
           });
 
           // Return Action
-        } else if (result.return === 'return') {
+        } else if (result.action === 'return') {
 
-          // TODO
+          // Reservation
+          console.log('> Devolution');
+
+          this.reservationService.returnBook(reservation).subscribe({
+
+            // HTTP call is successful
+            next: (response) => {
+              console.log(response);
+            }
+          });
         }
-
       }
-      
-    });
-  }
 
-  // If the user has the book rented, it hides the rent button and provides a return button
-  isBookRentedByUser(reservations: any[]): boolean {
-    return reservations.some(reservation => reservation.userId === this.user?.id);
+    });
   }
 
   viewDetails(book: Book): void {

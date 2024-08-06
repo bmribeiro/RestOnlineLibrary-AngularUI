@@ -36,7 +36,7 @@
   <ng-container matColumnDef="delete_action">
     <th mat-header-cell *matHeaderCellDef> Delete </th>
     <td mat-cell *matCellDef="let element" class="col-delete_action">
-      <button mat-icon-button color="delete" (click)="deleteBook(element)">
+      <button mat-icon-button color="delete" (click)="deleteBook(element.id)">
         <mat-icon>delete</mat-icon>
       </button>
     </td>
@@ -50,13 +50,13 @@
       <ng-container *ngIf="element.available">
 
         <!-- User can rent book -->
-        <button *ngIf="!isBookRentedByUser(element.reservations)" mat-icon-button
+        <button *ngIf="(!element.userHasRented)" mat-icon-button
           (click)="actionOverBook('reserve', element)">
           <mat-icon>redo</mat-icon>
         </button>
 
         <!-- User has rented the book -->
-        <span *ngIf="isBookRentedByUser(element.reservations)" class="rented-label">Rented</span>
+        <span *ngIf="(element.userHasRented)" class="rented-label">Rented</span>
       </ng-container>
 
     </td>
@@ -66,7 +66,7 @@
   <ng-container matColumnDef="return_action">
     <th mat-header-cell *matHeaderCellDef> Return </th>
     <td mat-cell *matCellDef="let element" class="col-receive_action">
-      <button mat-icon-button *ngIf="isBookRentedByUser(element.reservations)" (click)="actionOverBook('return', element)">
+      <button mat-icon-button *ngIf="(element.userHasRented)" (click)="actionOverBook('return', element)">
         <mat-icon>undo</mat-icon>
       </button>
     </td>

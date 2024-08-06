@@ -25,6 +25,6 @@ export class ReservationService {
   returnBook(reservation: Reservation) {
 
     // Call
-    return this.http.put<Reservation>(`${this.apiUrl}/api/reservation/`, reservation);
+    return this.http.put<Reservation>(`${this.apiUrl}/api/reservations`, reservation);
   }
 }

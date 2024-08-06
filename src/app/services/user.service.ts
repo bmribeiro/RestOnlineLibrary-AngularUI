@@ -3,9 +3,7 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { User } from '../models/user';
-import { Book } from '../models/book';
-import { Reservation } from '../models/reservation';
-import { BookRental } from '../models/book-rental.interface';
+import { UserBookRental } from '../models/user-book-rental.ts';
 
 @Injectable({
   providedIn: 'root',
@@ -53,9 +51,9 @@ export class UserService {
     );
   }
   
-  getBooksRentedByUser(userId: number): Observable<BookRental[]> {
+  getUserBookRentals(userId: number): Observable<UserBookRental[]> {
 
-    return this.http.get<BookRental[]>(`${this.apiUrl}/api/authUsers/${userId}/rentedBooks`);
+    return this.http.get<UserBookRental[]>(`${this.apiUrl}/api/authUsers/${userId}/rentedBooks`);
   }
 
   
