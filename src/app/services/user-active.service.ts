@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { AuthUser } from '../models/auth_user';
 
 @Injectable({
@@ -21,5 +21,11 @@ export class UserActiveService {
 
   getSelectedUser(): Observable<AuthUser | null> {
     return this.selectedUserSubject.asObservable();
+  }
+
+  isAdmin(): Observable<boolean> {
+    return this.selectedUser$.pipe(
+      map(user => user?.profile === 'admin')
+    );
   }
 }

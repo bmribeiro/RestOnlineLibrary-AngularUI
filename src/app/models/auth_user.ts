@@ -4,4 +4,5 @@ export interface AuthUser {
   lastName: string;
   login: string;
   token: string;
+  profile: string;
 }

@@ -15,11 +15,11 @@
                 <li class="nav-item">
                     <a class="nav-link" routerLink="/books" routerLinkActive="active" aria-current="page">Books</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *ngIf="(isAdmin$ | async)">
                     <a class="nav-link" routerLink="/users" routerLinkActive="active" aria-current="page">Users</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" routerLink="/authusers" routerLinkActive="active" aria-current="page">Auth
+                    <a class="nav-link" *ngIf="(isAdmin$ | async)" routerLink="/authusers" routerLinkActive="active" aria-current="page">Auth
                         Users</a>
                 </li>
             </ul>

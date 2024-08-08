@@ -11,11 +11,14 @@ import { AuthService } from '../../../services/auth.service';
 export class HeaderComponent {
 
   isAuthenticated$!: Observable<boolean>;
+  isAdmin$: Observable<boolean>;
 
   constructor(
     private authService : AuthService,
     private userActiveService: UserActiveService
-  ) {}
+  ) {
+    this.isAdmin$ = this.userActiveService.isAdmin();
+  }
 
   ngOnInit(): void {
     this.isAuthenticated$ = this.userActiveService.selectedUser$.pipe(

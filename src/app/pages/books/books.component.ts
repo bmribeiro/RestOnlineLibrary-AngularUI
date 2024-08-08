@@ -28,7 +28,7 @@ export class BooksComponent implements OnInit, AfterViewInit {
   availableBooks: AvailableBook[] = [];
 
   // Table Configuration
-  displayedColumns: string[] = ['title', 'category', 'copies', 'available', 'delete_action', 'request_action', 'return_action'];
+  displayedColumns: string[] = [];
   dataSource!: MatTableDataSource<AvailableBook, MatPaginator>;
 
   // Reference to the MatPaginator for pagination control
@@ -45,6 +45,7 @@ export class BooksComponent implements OnInit, AfterViewInit {
 
     this.userActiveService.getSelectedUser().subscribe(selectedUser => {
       this.user = selectedUser;
+      this.updateDisplayedColumns();
     });
   }
 
@@ -183,5 +184,19 @@ export class BooksComponent implements OnInit, AfterViewInit {
   viewDetails(book: Book): void {
     this.router.navigate(['/detail', 'book', book.id]);
   }
+
+  // Displayed Columns
+  private updateDisplayedColumns(): void {
+    if (this.user?.profile === 'admin') {
+      this.displayedColumns = ['title', 'category', 'copies', 'available', 'delete_action', 'request_action', 'return_action'];
+    } else if (this.user?.profile === 'user') {
+      this.displayedColumns = ['title', 'category', 'copies', 'available', 'request_action', 'return_action'];
+    } else if (this.user?.profile === 'guest') {
+      this.displayedColumns = ['title', 'category', 'copies', 'available'];
+    } else {
+      this.displayedColumns = [];
+    }
+  }
+
 }
 
