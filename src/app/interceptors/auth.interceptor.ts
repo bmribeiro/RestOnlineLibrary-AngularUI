@@ -1,17 +1,17 @@
 import { HttpInterceptor, HttpRequest, HttpHandler } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { AuthService } from "../services/auth.service";
+import { AuthorizationService } from "../services/authorization-service";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-    constructor(private authService: AuthService) { }
+    constructor(private authorizationService: AuthorizationService) { }
 
     // Receiving the Request (req) and the Request Handler (next)
     intercept(req: HttpRequest<any>, next: HttpHandler) {
 
         // Headers
-        const headers = this.authService.getHeaders();
+        const headers = this.authorizationService.getHeaders();
 
         // Clones the Request with the Headers
         const authReq = req.clone({ headers });

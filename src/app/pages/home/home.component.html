@@ -19,10 +19,10 @@
     </ng-container>
 
     <!-- Rental Date -->
-    <ng-container matColumnDef="rental_date">
+    <ng-container matColumnDef="rentalAt">
       <th mat-header-cell *matHeaderCellDef>Rental Date</th>
       <td mat-cell *matCellDef="let element">
-        {{ getRentalDate(element.reservedAt) }}
+        {{ getRentalDate(element.rentalAt) }}
       </td>
     </ng-container>
 
@@ -31,7 +31,7 @@
       <th mat-header-cell *matHeaderCellDef>Days Passed</th>
       <td mat-cell *matCellDef="let element">
         <div class="icon-container">
-          {{ getDaysPassed(element.reservedAt) }}
+          {{ getDaysPassed(element.rentalAt) }}
         </div>
       </td>
     </ng-container>
@@ -40,7 +40,7 @@
     <ng-container matColumnDef="days_signal">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let element">
-        <mat-icon [ngClass]="getColorClass(getDaysPassed(element.reservedAt))" class="small-icon">
+        <mat-icon [ngClass]="getColorClass(getDaysPassed(element.rentalAt))" class="small-icon">
           calendar_today
         </mat-icon>
     </ng-container>
@@ -86,18 +86,18 @@
     </ng-container>
 
     <!-- Rental Date -->
-    <ng-container matColumnDef="rental_date">
+    <ng-container matColumnDef="rentalAt">
       <th mat-header-cell *matHeaderCellDef>Rental Date</th>
       <td mat-cell *matCellDef="let element">
-        {{ getRentalDate(element.reservedAt) }}
+        {{ getRentalDate(element.rentalAt) }}
       </td>
     </ng-container>
 
     <!-- Returned Date -->
-    <ng-container matColumnDef="statusChangedAt">
+    <ng-container matColumnDef="rentalStatusChangedAt">
       <th mat-header-cell *matHeaderCellDef>Returned Date</th>
       <td mat-cell *matCellDef="let element">
-        {{ getRentalDate(element.statusChangedAt) }}
+        {{ getRentalDate(element.rentalStatusChangedAt) }}
       </td>
     </ng-container>
 
@@ -106,7 +106,7 @@
       <th mat-header-cell *matHeaderCellDef>Days Passed</th>
       <td mat-cell *matCellDef="let element">
         <div class="icon-container">
-          {{ getDaysPassed(element.reservedAt) }}
+          {{ getDaysPassed(element.rentalAt) }}
         </div>
       </td>
     </ng-container>
@@ -115,7 +115,7 @@
     <ng-container matColumnDef="days_signal">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let element">
-        <mat-icon [ngClass]="getColorClass(getDaysPassed(element.reservedAt))" class="small-icon">
+        <mat-icon [ngClass]="getColorClass(getDaysPassed(element.rentalAt))" class="small-icon">
           calendar_today
         </mat-icon>
     </ng-container>

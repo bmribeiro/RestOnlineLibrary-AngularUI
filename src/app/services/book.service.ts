@@ -1,9 +1,8 @@
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Book } from '../models/book';
-import { AvailableBook } from '../models/available-book';
+import { Book } from '../models/views/book/book';
 
 @Injectable({
   providedIn: 'root',
@@ -15,15 +14,16 @@ export class BookService {
   constructor(private http: HttpClient) {
   }
 
-  getBooks(): Observable<AvailableBook[]> {
+  getBooks(): Observable<Book[]> {
 
-    return this.http.get<AvailableBook[]>(`${this.apiUrl}/api/books`);
+    return this.http.get<Book[]>(`${this.apiUrl}/api/books`);
   }
 
   getBookById(id: number): Observable<HttpResponse<Book>> {
 
     return this.http.get<Book>(`${this.apiUrl}/api/books/${id}`, { observe: 'response' });
   }
+
 
   saveBook(book: Book): Observable<Book> {
 
@@ -52,8 +52,8 @@ export class BookService {
       );
   }
 
-  getAllBooksWithUserRentalStatus(userId: number): Observable<AvailableBook[]> {
-    return this.http.get<AvailableBook[]>(`${this.apiUrl}/api/books/user-status/${userId}`);
+  getBooksWithUserRentalStatus(userId: number): Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.apiUrl}/api/books/user-status/${userId}`);
   }
 
 }

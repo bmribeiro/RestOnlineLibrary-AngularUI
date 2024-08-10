@@ -1,8 +1,7 @@
 export interface AuthUser {
+  
   id?: number;
-  firstName: string;
-  lastName: string;
-  login: string;
+  username: string;
   token: string;
-  profile: string;
+  role: string;
 }

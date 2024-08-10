@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserActiveService } from '../../services/user-active.service';
-import { Book } from '../../models/book';
 import { AuthUser } from '../../models/auth_user';
 import { UserService } from '../../services/user.service';
 import { MatPaginator } from '@angular/material/paginator';
@@ -8,10 +7,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { BookDialogComponent } from '../../dialogs/book-dialog/book-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { UserBookRental } from '../../models/user-book-rental.ts';
-import { AvailableBook } from '../../models/available-book';
+import { Book } from '../../models/views/book/book';
 import { Reservation } from '../../models/reservation';
 import { ReservationService } from '../../services/reservation.service';
+import { UserRental } from '../../models/views/home/user-rental';
 
 @Component({
   selector: 'app-home',
@@ -24,16 +23,16 @@ export class HomeComponent implements OnInit {
   user: AuthUser | null = null;
 
   // Rented books
-  userBookRentals: UserBookRental[] = [];
+  userRentals: UserRental[] = [];
 
   // Rental History
-  userBookRentalHistory: UserBookRental[] = []
+  userRentalHistory: UserRental[] = []
 
   // Rented Configuration
   displayedRentalColumns: string[] = [
     'title',
     'category',
-    'rental_date',
+    'rentalAt',
     'days_passed',
     'days_signal',
     'return_action',
@@ -43,15 +42,14 @@ export class HomeComponent implements OnInit {
   displayedReturnedColumns: string[] = [
     'title',
     'category',
-    'rental_date',
-    'statusChangedAt',
+    'rentalAt',
+    'rentalStatusChangedAt',
     'days_passed',
     'days_signal'
   ];
 
-  dataSource!: MatTableDataSource<UserBookRental, MatPaginator>;
-
-  dataSourceHistory!: MatTableDataSource<UserBookRental, MatPaginator>;
+  dataSource!: MatTableDataSource<UserRental, MatPaginator>;
+  dataSourceHistory!: MatTableDataSource<UserRental, MatPaginator>;
 
   // Reference to the MatPaginator for pagination control
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -70,31 +68,31 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.user && typeof this.user.id === 'number') {
-      this.userService.getUserBookRentals(this.user.id).subscribe(
+
+      console.log("HOME");
+      this.userService.getUserRentals(this.user.id).subscribe(
 
         (books) => {
 
-          this.userBookRentals = [];
-          this.userBookRentalHistory = [];
+          this.userRentals = [];
+          this.userRentalHistory = [];
 
           for (const book of books) {
+
+            console.log(book);
             
             // Rented
-            if (book.status === 'rented') {
-
-              console.log("Rented");
-              this.userBookRentals.push(book);
+            if (book.rentalStatus === 'rented') {
+              this.userRentals.push(book);
 
               // History
-            } else if (book.status === 'returned') {
-
-              console.log("Returned");
-              this.userBookRentalHistory.push(book);
+            } else if (book.rentalStatus === 'returned') {
+              this.userRentalHistory.push(book);
             }
           }
 
-          this.dataSource = new MatTableDataSource<UserBookRental>(this.userBookRentals);
-          this.dataSourceHistory = new MatTableDataSource<UserBookRental>(this.userBookRentalHistory);
+          this.dataSource = new MatTableDataSource<UserRental>(this.userRentals);
+          this.dataSourceHistory = new MatTableDataSource<UserRental>(this.userRentalHistory);
 
           if (this.paginator) {
             
@@ -124,9 +122,7 @@ export class HomeComponent implements OnInit {
   }
 
   // Actions on the book: Rent and Return
-  actionOverBook(action: String, book: AvailableBook): void {
-
-    console.log('> Action Over a Book');
+  actionOverBook(action: String, book: Book): void {
 
     const dialogRef = this.dialog.open(BookDialogComponent, {
       data: {
@@ -143,9 +139,6 @@ export class HomeComponent implements OnInit {
           id: null,
           user: this.user,
           book: result.obj,
-          reservedAt: null,
-          status: null,
-          statusChangedAt: null
         };
 
         if (result.action === 'return') {
@@ -167,18 +160,18 @@ export class HomeComponent implements OnInit {
   }
 
   // Rental Date
-  getRentalDate(reservedAt: string): string {
+  getRentalDate(rentalAt: string): string {
 
-    return reservedAt
-      ? new Date(reservedAt).toLocaleDateString()
+    return rentalAt
+      ? new Date(rentalAt).toLocaleDateString()
       : 'N/A';
   }
 
   // Calculate the number of days passed since the rental date
-  getDaysPassed(reservedAt: string): number {
+  getDaysPassed(rentalAt: string): number {
 
-    if (reservedAt) {
-      const rentalDate = new Date(reservedAt);
+    if (rentalAt) {
+      const rentalDate = new Date(rentalAt);
       const currentDate = new Date();
       const diffTime = Math.abs(currentDate.getTime() - rentalDate.getTime());
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -189,22 +182,22 @@ export class HomeComponent implements OnInit {
 
   // Checks if user has rented books
   hasRentedBooks(): boolean {
-    return this.userBookRentals.length > 0;
+    return this.userRentals.length > 0;
   }
 
   // Checks if user has rented books
   hasRentedBooksHistory(): boolean {
-    return this.userBookRentalHistory.length > 0;
+    return this.userRentalHistory.length > 0;
   }
 
   // Traffic light for duration of rental
   getColorClass(daysPassed: number): string {
 
-    if (daysPassed < 5) {
+    if (daysPassed < 15) {
       return 'green';
-    } else if (daysPassed >= 5 && daysPassed < 10) {
+    } else if (daysPassed >= 15 && daysPassed < 30) {
       return 'yellow';
-    } else if (daysPassed >= 10 && daysPassed < 15) {
+    } else if (daysPassed >= 30 && daysPassed < 35) {
       return 'orange';
     } else {
       return 'red';

@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Book } from '../../models/book';
+import { Book } from '../../models/views/book/book';
 
 @Component({
   selector: 'app-add-book-dialog',

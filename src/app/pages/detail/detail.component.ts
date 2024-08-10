@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Book } from '../../models/book';
-import { User } from '../../models/user';
 import { ActivatedRoute } from '@angular/router';
-import { BookService } from '../../services/book.service';
-import { UserService } from '../../services/user.service';
 import { HttpResponse } from '@angular/common/http';
+import { AdminService } from '../../services/admin-service';
+import { BookDetail } from '../../models/views/book/book-detail';
+import { UserDetail } from '../../models/views/user/user-detail';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-detail',
@@ -13,47 +13,47 @@ import { HttpResponse } from '@angular/common/http';
 })
 export class DetailComponent implements OnInit {
 
-  data!: User | Book;
+  private dataSubject = new BehaviorSubject<UserDetail | BookDetail | null>(null);
+  data$: Observable<UserDetail | BookDetail | null> = this.dataSubject.asObservable();
+
   type!: 'user' | 'book';
   id!: number;
 
   constructor(
     private route: ActivatedRoute,
-    private userService: UserService,
-    private bookService: BookService
-  ) {}
+    private adminService: AdminService
+  ) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-
       this.id = +params['id'];
       this.type = params['type'] as 'user' | 'book';
 
-      if (this.type === 'user') {
-        
-        this.userService.getUserById(this.id).subscribe({
-
-          next: (response: HttpResponse<User>) => {
-            this.data = response.body as User;
-          },
-          error: (error) => {
-            console.error('Error fetching user:', error);
-          }
-        });
-
-      } else if (this.type === 'book') {
-
-        this.bookService.getBookById(this.id).subscribe({
-
-          next: (response: HttpResponse<Book>) => {
-            this.data = response.body as Book;
-          },
-          error: (error) => {
-            console.error('Error fetching user:', error);
-          }
-        });
-      }
+      this.fetchData();
     });
   }
 
+  private fetchData(): void {
+    if (this.type === 'user') {
+      this.adminService.getUserDetailById(this.id).subscribe({
+        next: (response: HttpResponse<UserDetail>) => {
+          this.dataSubject.next(response.body as UserDetail);
+          console.log('User data received:', response.body);
+        },
+        error: (error) => {
+          console.error('Error fetching user:', error);
+        }
+      });
+
+    } else if (this.type === 'book') {
+      this.adminService.getBookDetailById(this.id).subscribe({
+        next: (response: HttpResponse<BookDetail>) => {
+          this.dataSubject.next(response.body as BookDetail);
+        },
+        error: (error) => {
+          console.error('Error fetching book:', error);
+        }
+      });
+    }
+  }
 }

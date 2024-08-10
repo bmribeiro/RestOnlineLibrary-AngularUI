@@ -2,13 +2,15 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { User } from '../models/user';
-import { UserBookRental } from '../models/user-book-rental.ts';
+import { User } from '../models/views/user/user';
+import { UserRental } from '../models/views/home/user-rental';
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
+ 
 
   private apiUrl = environment.apiUrl;
   
@@ -23,6 +25,7 @@ export class UserService {
     
     return this.http.get<User>(`${this.apiUrl}/api/users/${id}`, { observe: 'response'});
   }
+
 
   saveUser(user: User): Observable<User>{
 
@@ -51,9 +54,9 @@ export class UserService {
     );
   }
   
-  getUserBookRentals(userId: number): Observable<UserBookRental[]> {
+  getUserRentals(userId: number): Observable<UserRental[]> {
 
-    return this.http.get<UserBookRental[]>(`${this.apiUrl}/api/authUsers/${userId}/rentedBooks`);
+    return this.http.get<UserRental[]>(`${this.apiUrl}/api/users/${userId}/rentals`);
   }
 
   

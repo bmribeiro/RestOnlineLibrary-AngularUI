@@ -2,11 +2,11 @@ import { Component, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { UserActiveService } from '../../../services/user-active.service';
-import { AuthService } from '../../../services/auth.service';
-import { LoginFormData } from '../../../models/login-form-data';
+import { AuthorizationService } from '../../../services/authorization-service';
+import { LoginFormData } from '../../../models/auth/login-form-data';
 import { Router } from '@angular/router';
 import { NotificationService } from '../../../services/notification.service';
-import { RegisterFormData } from '../../../models/register-form-data';
+import { RegisterFormData } from '../../../models/auth/register-form-data';
 
 @Component({
   selector: 'app-form',
@@ -21,7 +21,7 @@ export class FormComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService,
+    private authorizationService: AuthorizationService,
     private userActiveService: UserActiveService,
     private router: Router,
     private notificationService: NotificationService
@@ -36,8 +36,7 @@ export class FormComponent {
     });
 
     this.registerForm = this.formBuilder.group({
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
+      username: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
     });
@@ -57,7 +56,7 @@ export class FormComponent {
       // Login Form Data
       const loginFormData: LoginFormData = this.loginForm.value;
 
-      this.authService.request('post', '/login', { 
+      this.authorizationService.request('post', '/login', { 
 
           email: loginFormData.email,
           password: loginFormData.password
@@ -65,7 +64,7 @@ export class FormComponent {
       .subscribe(
         (response) => {
 
-          this.authService.setAuthToken(response.token);
+          this.authorizationService.setAuthToken(response.token);
           this.userActiveService.setSelectedUser(response);
 
           // Redirect to: Home
@@ -87,27 +86,25 @@ export class FormComponent {
       console.log(registerFormData);
 
       // Usando o método request do AuthService
-      this.authService
+      this.authorizationService
         .request('post', '/register', {
 
-          firstName: registerFormData.firstName,
-          lastName: registerFormData.lastName,
+          username: registerFormData.username,
           email: registerFormData.email,
           password: registerFormData.password
         })
         .subscribe(
           (response) => {
-            this.authService.setAuthToken(response.token);
+            
+            this.authorizationService.setAuthToken(response.token);
             this.userActiveService.setSelectedUser(response);
 
             // Redirect to: Home
             this.router.navigate(['/home']);
-
-            //
             this.notificationService.sendMessage('Successfully Deleted Book');
           },
           (error) => {
-            this.authService.setAuthToken(null);
+            this.authorizationService.setAuthToken(null);
             console.error('Registration error', error);
           }
         );

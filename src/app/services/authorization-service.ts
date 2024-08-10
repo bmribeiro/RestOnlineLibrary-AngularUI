@@ -1,12 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { catchError, map, Observable, of, tap } from 'rxjs';
+import { catchError, Observable, of, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class AuthorizationService {
 
   private apiUrl = environment.apiUrl;
 

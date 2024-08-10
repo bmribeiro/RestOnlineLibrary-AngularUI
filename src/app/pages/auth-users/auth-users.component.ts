@@ -3,11 +3,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { User } from '../../models/user';
+import { User } from '../../models/views/user/user';
 import { NotificationService } from '../../services/notification.service';
-import { UserService } from '../../services/user.service';
-import { AuthUserService } from '../../services/auth-user.service';
-import { AuthUser } from '../../models/auth_user';
+import { AdminService } from '../../services/admin-service';
 
 @Component({
   selector: 'app-auth-users',
@@ -17,17 +15,17 @@ import { AuthUser } from '../../models/auth_user';
 export class AuthUsersComponent {
 
   // List of Users
-  authUsers: AuthUser[] = [];
+  authUsers: User[] = [];
 
   // Table Configuration
   displayedColumns: string[] = ['user', 'email', 'role', 'created', 'active'];
-  dataSource!: MatTableDataSource<AuthUser, MatPaginator>;
+  dataSource!: MatTableDataSource<User, MatPaginator>;
 
   // Reference to the MatPaginator for pagination control
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
-    private authUserService: AuthUserService,
+    private adminService: AdminService,
     private notificationService: NotificationService,
     private router: Router,
     public dialog: MatDialog) { }
@@ -35,14 +33,11 @@ export class AuthUsersComponent {
   ngOnInit(): void {
     console.log('> OnInit');
 
-    this.authUserService.getAuthUsers().subscribe(
+    this.adminService.getAuthUsers().subscribe(
       (data) => {
 
-        console.log(this.authUsers);
-
         this.authUsers = data;
-
-        this.dataSource = new MatTableDataSource<AuthUser>(this.authUsers);
+        this.dataSource = new MatTableDataSource<User>(this.authUsers);
 
         if (this.paginator) {
 
@@ -57,7 +52,6 @@ export class AuthUsersComponent {
   }
 
   ngAfterViewInit(): void {
-    console.log('> AfterViewInit');
 
     // Connect MatPaginator to MatTableDataSource
     if (this.dataSource && this.paginator) {
@@ -65,5 +59,8 @@ export class AuthUsersComponent {
     }
   }
 
+  viewDetails(user: User): void {
+    this.router.navigate(['/detail', 'user', user.id]);
+  }
 
 }

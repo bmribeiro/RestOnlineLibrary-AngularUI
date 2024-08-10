@@ -25,7 +25,7 @@ export class UserActiveService {
 
   isAdmin(): Observable<boolean> {
     return this.selectedUser$.pipe(
-      map(user => user?.profile === 'admin')
+      map(user => user?.role === 'admin')
     );
   }
 }

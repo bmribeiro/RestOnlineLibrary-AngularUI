@@ -1,26 +1,110 @@
-<div *ngIf="type === 'user' && data">
+<div *ngIf="type === 'user' && objectData">
 
     <h2>User Details</h2>
 
-    <div>
-        <p>Title: {{data.username }} </p>
-        <p>Category: {{data.email }} </p>
-        <p>Copies: {{data.profile }} </p>
-        <p>Available: {{data.created }} </p>
-        <p>Available: {{data.boolean }} </p>
+    <p>Name: {{ getUsername() }} </p>
+    <p>Profile: {{ getUserProfile() }} </p>
+    <p>Created At: {{ getUserCreated() | date:'dd-MM-yyyy HH:mm:ss' }} </p>
+
+    <hr>
+
+    <div *ngIf="dataSource.data.length > 0; else noData">
+
+        <h2>Books Reservarions</h2>
+
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 customStyle">
+
+            <!-- User First Name -->
+            <ng-container matColumnDef="title">
+                <th mat-header-cell *matHeaderCellDef>Title</th>
+                <td mat-cell *matCellDef="let element" (click)="viewBookDetails(element)"> {{ element.title }}</td>
+            </ng-container>
+
+            <!-- User Last Name -->
+            <ng-container matColumnDef="category">
+                <th mat-header-cell *matHeaderCellDef>Category</th>
+                <td mat-cell *matCellDef="let element">{{ element.category }}</td>
+            </ng-container>
+
+            <!-- Reserved At -->
+            <ng-container matColumnDef="rentalAt">
+                <th mat-header-cell *matHeaderCellDef>Reserved At</th>
+                <td mat-cell *matCellDef="let element">{{ element.rentalAt | date:'dd-MM-yyyy HH:mm:ss' }}</td>
+            </ng-container>
+
+            <!-- Status -->
+            <ng-container matColumnDef="rentalStatus">
+                <th mat-header-cell *matHeaderCellDef>Status</th>
+                <td mat-cell *matCellDef="let element">{{ element.rentalStatus ? 'Yes' : 'No' }}</td>
+            </ng-container>
+
+            <!-- Status Changed At -->
+            <ng-container matColumnDef="rentalStatusChangedAt">
+                <th mat-header-cell *matHeaderCellDef>Status Changed At</th>
+                <td mat-cell *matCellDef="let element">{{ element.rentalStatusChangedAt | date:'dd-MM-yyyy HH:mm:ss' }}</td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        </table>
     </div>
+
+    <ng-template #noData>
+        <p>The user has no booking history</p>
+    </ng-template>
 
 </div>
 
-<div *ngIf="type === 'book' && data">
+<div *ngIf="type === 'book' && objectData">
 
     <h2>Book Details</h2>
 
-    <div>
-        <p>Title: {{data.title }} </p>
-        <p>Category: {{data.category }} </p>
-        <p>Copies: {{data.copies }} </p>
-        <p>Available: {{data.available }} </p>
+    <p>Title: {{ getBookTitle() }}</p>
+    <p>Category: {{ getBookCategory() }}</p>
+    <p>Copies: {{ getBookCopies() }}</p>
+    <p>Available: {{ getBookAvailable() }}</p>
+
+    <hr>
+
+    <div *ngIf="dataSource.data.length > 0; else noData">
+
+        <h2>Users Reservarions</h2>
+
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 customStyle">
+
+            <!-- Name -->
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td mat-cell *matCellDef="let element" (click)="viewUserDetails(element)"> {{ element.username }}</td>
+            </ng-container>
+
+            <!-- Reserved At -->
+            <ng-container matColumnDef="rentalAt">
+                <th mat-header-cell *matHeaderCellDef>Reserved At</th>
+                <td mat-cell *matCellDef="let element">{{ element.rentalAt }}</td>
+            </ng-container>
+
+            <!-- Status -->
+            <ng-container matColumnDef="rentalStatus">
+                <th mat-header-cell *matHeaderCellDef>Status</th>
+                <td mat-cell *matCellDef="let element">{{ element.rentalStatus ? 'Yes' : 'No' }}</td>
+            </ng-container>
+
+            <!-- Status Changed At -->
+            <ng-container matColumnDef="rentalStatusChangedAt">
+                <th mat-header-cell *matHeaderCellDef>Status Changed At</th>
+                <td mat-cell *matCellDef="let element">{{ element.rentalStatusChangedAt }}</td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        </table>
     </div>
+
+    <ng-template #noData>
+        <p>The book has no reservation history</p>
+    </ng-template>
 
 </div>

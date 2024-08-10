@@ -36,24 +36,13 @@
     <mat-tab label="Register">
         <form [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()">
 
-            <!-- First Name -->
+            <!-- Username -->
             <mat-form-field>
-                <mat-label>First Name</mat-label>
-                <input matInput formControlName="firstName" />
-
-                <!-- First Name - Error Message -->
-                <mat-error *ngIf="registerForm.get('registerFirstName')?.invalid">
-                    Required field
-                </mat-error>
-            </mat-form-field>
-
-            <!-- Last Name -->
-            <mat-form-field>
-                <mat-label>Second Name</mat-label>
-                <input matInput formControlName="lastName" />
+                <mat-label>Username</mat-label>
+                <input matInput formControlName="username" />
 
                 <!-- Last Name - Error Message -->
-                <mat-error *ngIf="registerForm.get('registerLastName')?.invalid">
+                <mat-error *ngIf="registerForm.get('registerUsername')?.invalid">
                     Required field
                 </mat-error>
             </mat-form-field>

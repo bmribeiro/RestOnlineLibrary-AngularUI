@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from './services/auth.service';
+import { AuthorizationService } from './services/authorization-service';
 import { UserActiveService } from './services/user-active.service';
 import { AuthUser } from './models/auth_user';
 
@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
   title = 'OnlineLibrary';
 
   constructor(
-    private authService: AuthService,
+    private authorizationService: AuthorizationService,
     private userActiveService: UserActiveService,
     private router: Router
   ) { }
@@ -30,9 +30,9 @@ export class AppComponent implements OnInit {
     });
 
     // if no user is logged in and there is a token stored
-    if (this.user === null && this.authService.getAuthToken() != null) {
+    if (this.user === null && this.authorizationService.getAuthToken() != null) {
 
-      this.authService.validateToken().subscribe({
+      this.authorizationService.validateToken().subscribe({
         next: (response) => {
           if (response && response.token) {
 

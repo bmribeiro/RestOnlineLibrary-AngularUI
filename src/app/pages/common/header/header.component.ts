@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { UserActiveService } from '../../../services/user-active.service';
-import { AuthService } from '../../../services/auth.service';
+import { AuthorizationService } from '../../../services/authorization-service';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +14,7 @@ export class HeaderComponent {
   isAdmin$: Observable<boolean>;
 
   constructor(
-    private authService : AuthService,
+    private authorizationService : AuthorizationService,
     private userActiveService: UserActiveService
   ) {
     this.isAdmin$ = this.userActiveService.isAdmin();
@@ -28,7 +28,7 @@ export class HeaderComponent {
 
   onLogout(): void {
     this.userActiveService.setSelectedUser(null);
-    this.authService.setAuthToken(null)
+    this.authorizationService.setAuthToken(null)
   }
 
 }

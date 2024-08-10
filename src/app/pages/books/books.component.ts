@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { BookService } from '../../services/book.service';
-import { Book } from '../../models/book';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
@@ -12,7 +11,7 @@ import { UserActiveService } from '../../services/user-active.service';
 import { AuthUser } from '../../models/auth_user';
 import { Reservation } from '../../models/reservation';
 import { ReservationService } from '../../services/reservation.service';
-import { AvailableBook } from '../../models/available-book';
+import { Book } from '../../models/views/book/book';
 
 @Component({
   selector: 'app-books',
@@ -25,11 +24,11 @@ export class BooksComponent implements OnInit, AfterViewInit {
   user: AuthUser | null = null;
 
   // List of Books
-  availableBooks: AvailableBook[] = [];
+  books: Book[] = [];
 
   // Table Configuration
   displayedColumns: string[] = [];
-  dataSource!: MatTableDataSource<AvailableBook, MatPaginator>;
+  dataSource!: MatTableDataSource<Book, MatPaginator>;
 
   // Reference to the MatPaginator for pagination control
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -52,14 +51,11 @@ export class BooksComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     console.log('> OnInit');
 
-    this.bookService.getAllBooksWithUserRentalStatus(this.user!.id!).subscribe(
+    this.bookService.getBooksWithUserRentalStatus(this.user!.id!).subscribe(
       (data) => {
-        this.availableBooks = data;
 
-        console.log(this.availableBooks);
-
-        this.dataSource = new MatTableDataSource<AvailableBook>(this.availableBooks);
-        console.log(this.availableBooks);
+        this.books = data;
+        this.dataSource = new MatTableDataSource<Book>(this.books);
 
         if (this.paginator) {
           // Connect MatPaginator to MatTableDataSource
@@ -73,7 +69,6 @@ export class BooksComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    console.log('> AfterViewInit');
 
     // Connect MatPaginator to MatTableDataSource
     if (this.dataSource && this.paginator) {
@@ -124,9 +119,7 @@ export class BooksComponent implements OnInit, AfterViewInit {
   }
 
   // Actions on the book: Rent and Return
-  actionOverBook(action: String, book: AvailableBook): void {
-
-    console.log('> Action Over a Book');
+  actionOverBook(action: String, book: Book): void {
 
     const dialogRef = this.dialog.open(BookDialogComponent, {
       data: {
@@ -143,16 +136,10 @@ export class BooksComponent implements OnInit, AfterViewInit {
           id: null,
           user: this.user,
           book: result.obj,
-          reservedAt: null,
-          status: null,
-          statusChangedAt: null
         };
 
         // Request Action
         if (result.action === 'reserve') {
-
-          // Reservation
-          console.log('> Reservation');
 
           this.reservationService.reserveBook(reservation).subscribe({
 
@@ -164,9 +151,6 @@ export class BooksComponent implements OnInit, AfterViewInit {
 
           // Return Action
         } else if (result.action === 'return') {
-
-          // Reservation
-          console.log('> Devolution');
 
           this.reservationService.returnBook(reservation).subscribe({
 
@@ -187,11 +171,12 @@ export class BooksComponent implements OnInit, AfterViewInit {
 
   // Displayed Columns
   private updateDisplayedColumns(): void {
-    if (this.user?.profile === 'admin') {
+    
+    if (this.user?.role === 'admin') {
       this.displayedColumns = ['title', 'category', 'copies', 'available', 'delete_action', 'request_action', 'return_action'];
-    } else if (this.user?.profile === 'user') {
+    } else if (this.user?.role === 'user') {
       this.displayedColumns = ['title', 'category', 'copies', 'available', 'request_action', 'return_action'];
-    } else if (this.user?.profile === 'guest') {
+    } else if (this.user?.role === 'guest') {
       this.displayedColumns = ['title', 'category', 'copies', 'available'];
     } else {
       this.displayedColumns = [];

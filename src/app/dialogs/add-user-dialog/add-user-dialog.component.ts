@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { User } from '../../models/user';
+import { User } from '../../models/views/user/user';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
@@ -22,7 +22,7 @@ export class AddUserDialogComponent {
     this.userForm = new FormGroup({
       username: new FormControl(data?.username || '', [Validators.required]),
       email: new FormControl(data?.email || '', [Validators.required]),
-      profile: new FormControl(data?.profile || '', [Validators.required])
+      profile: new FormControl(data?.role || '', [Validators.required])
     });
   }
 
@@ -39,9 +39,8 @@ export class AddUserDialogComponent {
       const user: User = {
         ...formValue,
         id: this.data?.id,
-        created: '',
-        active: false
-        
+        createdAt: new Date(),
+        userStatus: false
       };
 
       this.dialogRef.close({

@@ -1,11 +1,8 @@
 import { AuthUser } from "./auth_user";
-import { Book } from "./book";
+import { Book } from "./views/book/book";
 
 export interface Reservation {
     id: number | null;
-    user: AuthUser | number;
-    book: Book | number;
-    reservedAt: string | null,
-    status: string | null,
-    statusChangedAt: string | null
+    user: AuthUser;
+    book: Book;
 }

@@ -13,7 +13,7 @@ export class AdminGuard implements CanActivate {
     canActivate(): Observable<boolean> {
         return this.userActiveService.getSelectedUser().pipe(
             map(user => {
-                if (user && user.profile === 'admin') {
+                if (user && user.role === 'admin') {
                     return true;
                 } else {
                     this.router.navigate(['']);

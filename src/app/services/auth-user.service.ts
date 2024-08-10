@@ -8,13 +8,9 @@ import { AuthUser } from '../models/auth_user';
   providedIn: 'root',
 })
 export class AuthUserService {
+  
   private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
-
-  getAuthUsers(): Observable<AuthUser[]> {
-    return this.http.get<AuthUser[]>(`${this.apiUrl}/api/authUsers`);
-  }
-
  
 }
