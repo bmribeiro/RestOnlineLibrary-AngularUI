@@ -64,7 +64,11 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     MatTabsModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
     provideAnimationsAsync()
   ],
   bootstrap: [AppComponent]
