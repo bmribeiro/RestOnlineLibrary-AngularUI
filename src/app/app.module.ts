@@ -27,6 +27,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { BookDialogComponent } from './dialogs/book-dialog/book-dialog.component';
 import { AuthUsersComponent } from './pages/auth-users/auth-users.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { HighchartsChartModule } from 'highcharts-angular';
+import { RentalsUserComponent } from './chart/rentals/rentals-user/rentals-user.component';
+import { CategoryBooksChartComponent } from './chart/categoryBooks/category-books-chart/category-books-chart.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +46,9 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     DetailViewComponent,
     FormComponent,
     BookDialogComponent,
-    AuthUsersComponent
+    AuthUsersComponent,
+    RentalsUserComponent,
+    CategoryBooksChartComponent
   ],
   imports: [
     HttpClientModule,
@@ -61,7 +66,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     MatDialogClose,
     MatIconModule,
     MatButtonModule,
-    MatTabsModule
+    MatTabsModule,
+    HighchartsChartModule
   ],
   providers: [
     {

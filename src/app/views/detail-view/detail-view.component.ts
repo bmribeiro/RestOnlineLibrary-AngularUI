@@ -18,7 +18,14 @@ export class DetailViewComponent {
   @Input() type!: 'user' | 'book';
 
   // Object
-  objectData!: UserDetail | BookDetail; 
+  objectData!: UserDetail | BookDetail;
+
+  // Rented and Returned
+  rentedCount: number = 0;
+  returnedCount: number = 0;
+
+  // Category and Quantity
+  categoriesCount: { [key: string]: number } = {};
 
   private columnMappings: { [key: string]: string[] } = {
     'book': [
@@ -38,7 +45,7 @@ export class DetailViewComponent {
 
   displayedColumns: string[] = [];
   dataSource = new MatTableDataSource<any>();
-  
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
@@ -66,7 +73,7 @@ export class DetailViewComponent {
   }
 
   private updateDataSource(): void {
-    
+
     if (this.type === 'book') {
 
       this.objectData = this.data as BookDetail;
@@ -78,8 +85,34 @@ export class DetailViewComponent {
 
       this.objectData = this.data as UserDetail;
       this.dataSource.data = (this.objectData as UserDetail).rentalBooks || [];
+
+      // Counter Rented / Returned
+      (this.objectData as UserDetail).rentalBooks.forEach(book => {
+        if (book.rentalStatus === 'rented') {
+          this.rentedCount++;
+        } else if (book.rentalStatus === 'returned') {
+          this.returnedCount++;
+        }
+      });
+
+      // Category of Books and Quantity
+      this.categoriesCount = {};
+
+      (this.objectData as UserDetail).rentalBooks.forEach(book => {
+        const category = book.category;
+        if (this.categoriesCount[category]) {
+          this.categoriesCount[category]++;
+        } else {
+          this.categoriesCount[category] = 1;
+        }
+      });
     }
     this.dataSource.paginator = this.paginator;
+  }
+  
+  // User has history
+  hasCategories(): boolean {
+    return Object.keys(this.categoriesCount).length > 0;
   }
 
   /**
@@ -123,7 +156,7 @@ export class DetailViewComponent {
   viewBookDetails(book: Book): void {
     this.router.navigate(['/detail', 'book', book.id]);
   }
-  
+
 
 
 }

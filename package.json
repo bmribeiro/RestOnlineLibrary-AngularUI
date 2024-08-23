@@ -24,6 +24,8 @@
     "@stomp/stompjs": "^7.0.0",
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
+    "highcharts": "^11.4.7",
+    "highcharts-angular": "^4.0.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"

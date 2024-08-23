@@ -41,7 +41,8 @@
             <!-- Status Changed At -->
             <ng-container matColumnDef="rentalStatusChangedAt">
                 <th mat-header-cell *matHeaderCellDef>Status Changed At</th>
-                <td mat-cell *matCellDef="let element">{{ element.rentalStatusChangedAt | date:'dd-MM-yyyy HH:mm:ss' }}</td>
+                <td mat-cell *matCellDef="let element">{{ element.rentalStatusChangedAt | date:'dd-MM-yyyy HH:mm:ss' }}
+                </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -53,6 +54,15 @@
     <ng-template #noData>
         <p>The user has no booking history</p>
     </ng-template>
+
+    <br>
+
+    <!-- Number of books rented and returned - Chart -->
+    <app-rentals-user *ngIf="rentedCount > 0 || returnedCount > 0" [rentedCount]="rentedCount"
+        [returnedCount]="returnedCount"></app-rentals-user>
+
+    <!-- Rental history by category - Chart -->
+    <app-category-books-chart *ngIf="hasCategories()" [categoriesCount]="categoriesCount"></app-category-books-chart>
 
 </div>
 
