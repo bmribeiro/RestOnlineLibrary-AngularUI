@@ -25,6 +25,12 @@
             </mat-error>
         </mat-form-field>
 
+        <!-- Book Description -->
+        <mat-form-field class="form-field-full-width">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="bookDescription"></textarea>
+        </mat-form-field>
+
         <!-- Copies -->
         <mat-form-field class="form-field-full-width">
             <mat-label>Quantity</mat-label>
@@ -35,6 +41,15 @@
                 Number of copies is a required field.
             </mat-error>
         </mat-form-field>
+
+        <input type="file" class="fileInput" (change)="onFileSelected($event)" #fileUpload>
+        
+        <div class="file-upload">
+          
+            <button mat-mini-fab color="primary" class="upload-btn" (click)="fileUpload.click()">
+                <mat-icon>attach_file</mat-icon>
+            </button>
+        </div>
 
     </form>
 </mat-dialog-content>

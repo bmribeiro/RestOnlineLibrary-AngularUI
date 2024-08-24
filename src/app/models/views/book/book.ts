@@ -1,3 +1,5 @@
+import { BookDetail } from "../../bookDetails";
+
 export interface Book {
 
   id: number;
@@ -6,4 +8,6 @@ export interface Book {
   copies: number;
   available: boolean;
   rentedByUser: boolean;
+
+  bookDetail?: BookDetail;
 }
