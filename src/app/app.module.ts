@@ -30,6 +30,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { RentalsUserComponent } from './chart/rentals/rentals-user/rentals-user.component';
 import { CategoryBooksChartComponent } from './chart/categoryBooks/category-books-chart/category-books-chart.component';
+import { DataAnalysisComponent } from './components/data-analysis/data-analysis.component';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -48,7 +50,8 @@ import { CategoryBooksChartComponent } from './chart/categoryBooks/category-book
     BookDialogComponent,
     AuthUsersComponent,
     RentalsUserComponent,
-    CategoryBooksChartComponent
+    CategoryBooksChartComponent,
+    DataAnalysisComponent
   ],
   imports: [
     HttpClientModule,
@@ -67,6 +70,7 @@ import { CategoryBooksChartComponent } from './chart/categoryBooks/category-book
     MatIconModule,
     MatButtonModule,
     MatTabsModule,
+    MatCardModule,
     HighchartsChartModule
   ],
   providers: [
